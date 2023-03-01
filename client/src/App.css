@@ -1,0 +1,6 @@
+#signup {
+  background-image: url("./assets//signup.jpg");
+  background-position: center; /* Center the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+}
+  
