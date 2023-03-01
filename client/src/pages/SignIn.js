@@ -44,7 +44,7 @@ const SignIn = () => {
     return ( 
     <div id="signup" className='h-screen w-screen flex flex-col items-center justify-center'>
         <div className=' sm:w-[65%] md:w-[50%] w-[90%]  bg-[#005FFF] lg:p-4 md:p-3 p-2 rounded-lg shadow-xl '>
-            <h3 className='lg:text-[24px] md:text-[22px]  sm:text-[20px] text-[18px] font-bold lg:mb-10 md:mb-8 sm:mb-6 mb-4 text-center text-white'> Login </h3>
+            <h3 className='lg:text-[24px] md:text-[22px]  sm:text-[20px] text-[18px] font-bold lg:mb-10 md:lg:mb-8 md:mb-6 sm:mb-4 mb-2 sm:mb-6 mb-4 text-center text-white mt-8'> Login </h3>
             <div className='flex flex-col justify-center items-start ml-[10%]'>
                
                 
@@ -63,7 +63,7 @@ const SignIn = () => {
                 <div className='w-[80%] flex justify-end'>
                  <button onClick={submit} className='bg-white shadow-lg rounded-lg p-2 text-[#005FFF] hover:bg-[#0088ff] hover:text-white font-semibold md:text-[16px] sm:text-[14px] text-[11px]'>Login</button>
                 </div>
-                <p className='md:text-[16px] sm:text-[14px] text-[11px]'>Don't have an account? <a href='sign in ' className='font-medium hover:text-white'>Sign up</a></p> 
+                <p className='md:text-[16px] sm:text-[14px] text-[11px] lg:mb-8 md:mb-6 sm:mb-4 mb-2 '>Don't have an account? <a href='sign in ' className='font-medium hover:text-white'>Sign up</a></p> 
             </div>
         </div>
     </div> );
