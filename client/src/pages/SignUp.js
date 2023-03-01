@@ -1,6 +1,8 @@
 
 import { useState } from 'react';
 import '../App.css'
+import { AiFillEye , AiFillEyeInvisible } from 'react-icons/ai';
+
 //we must change the <a> </a> in the line 41  by link
 const SignUp = () => {
 
@@ -11,8 +13,22 @@ const SignUp = () => {
     const [password ,setPassword]=useState('')
     const [confirmpassword ,setConfirmPassword]=useState('')
 
+    const [showPassword ,setShowPassword]=useState(false)
     const [Err , setErr]=useState(false)
     const [Msg , setMessage]=useState('Please fill all the fields')
+    const [typePwd,setTypePwd]=useState('password')
+
+
+    const showpass = ()=>{
+        setShowPassword(!showPassword)
+
+        if(showPassword) {
+            setTypePwd('password')
+        }
+        else{
+            setTypePwd('text')
+        }
+    }
     const submit =()=>{
     setErr(false)
     console.log(fullName,userName,avatar,phoneNumber,password,confirmpassword);
@@ -51,10 +67,14 @@ const SignUp = () => {
                 <input value={avatar} onChange={(e)=>{setAvatar(e.target.value)}} type="url" id="avatar" name="avatar" placeholder='https://avatarurl/image.png' className='w-[80%] sm:p-2 p-1 lg:text-[16px] md:text-[14px] sm:text-[12px]  text-[10px] rounded-md mt-1'/>     
             
                 <label htmlFor='password'  className='md:text-[16px] sm:text-[14px] text-[11px] font-semibold sm:mt-3 mt-2'>Password</label>
-                <input value={password} onChange={(e)=>{setPassword(e.target.value)}} type="password" id="password" name="password" min="6" placeholder='**********' className='w-[80%] sm:p-2 p-1 lg:text-[16px] md:text-[14px] sm:text-[12px]  text-[10px] rounded-md mt-1'/>     
-
+                <div className='w-full relative flex items-center'>
+                    <input value={password} onChange={(e)=>{setPassword(e.target.value)}} type={typePwd} id="password" name="password" min="6" placeholder='**********' className='w-[80%] sm:p-2 p-1 lg:text-[16px] md:text-[14px] sm:text-[12px]  text-[10px] rounded-md mt-1'/>     
+                   {showPassword && <AiFillEye className='relative right-6 mt-1 hover:cursor-pointer' onClick={showpass}/> }
+                    {!showPassword && <AiFillEyeInvisible className='relative right-6 mt-1 hover:cursor-pointer'onClick={showpass} /> }
+                </div>
+                
                 <label htmlFor='confirmpassword'  className='md:text-[16px] sm:text-[14px] text-[11px] font-semibold sm:mt-3 mt-2 '>Confirm Password</label>
-                <input value={confirmpassword} onChange={(e)=>{setConfirmPassword(e.target.value)}} type="password" id="confirmpassword" min="6"  name="confirmpassword" placeholder='**********' className='w-[80%] sm:p-2 p-1 lg:text-[16px] md:text-[14px] sm:text-[12px]  text-[10px] rounded-md mt-1 mb-4'/>     
+                <input value={confirmpassword} onChange={(e)=>{setConfirmPassword(e.target.value)}} type="password" id="confirmpassword" min="6"  name="confirmpassword" placeholder='**********' className='w-[80%] sm:p-2 p-1 lg:text-[16px] md:text-[14px] sm:text-[12px]  text-[10px] rounded-md mt-1 md:mb-4 mb-2'/>     
                 {Err && <h3 className=' text-center md:text-[16px] sm:text-[14px] text-[11px] font-bold text-red-600'>{Msg}</h3>}
                 <div className='w-[80%] flex justify-end'>
                  <button onClick={submit} className='bg-white shadow-lg rounded-lg p-2 text-[#005FFF] hover:bg-[#0088ff] hover:text-white font-semibold md:text-[16px] sm:text-[14px] text-[11px]'>Sign Up</button>
