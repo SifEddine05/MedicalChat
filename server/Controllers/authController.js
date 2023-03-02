@@ -4,7 +4,7 @@ dotenv.config()
 
 const crypto = require('crypto')
 const bcrypt = require('bcrypt')
-const StreamChat = require('stream-chat')
+const StreamChat = require('stream-chat').StreamChat
 const {connect} = require('getstream')
 
 
@@ -12,25 +12,39 @@ const {connect} = require('getstream')
 module.exports.signup = async (req,res)=>{
 
     try{
-    const serverClient = connect(process.API_KEY,process.API_SECRET,process.GET_STREAM_APP_ID)
-    const client = StreamChat.getInstance(process.API_KEY , process.API_SECRET)
-    const users = await client.queryUsers()
-    const exist = users.some(obj => obj.userName.toLowerCase() === req.body.userName.toLowerCase());
-    if(exist)
+    const serverClient = connect(process.env.API_KEY,process.env.API_SECRET,process.env.GET_STREAM_APP_ID)
+    const client = StreamChat.getInstance(process.env.API_KEY , process.env.API_SECRET)
+    const users = await client.queryUsers({})
+
+
+    const exist = users.users.some(obj => obj.userName === req.body.userName );
+    console.log(exist);
+
+  if(exist)
     {
-        res.status(400).json({success :false  , message : "This user Name exist please select another user Name " })
+        res.status(200).json({success :false  , message : "This user Name exist please select another user Name " })
     }
     else{
         const password = req.body.password 
         const hasedpassword = await bcrypt.hash(password,10)
         const userId = crypto.randomBytes(16).toString('hex');
         const token = serverClient.createUserToken(userId)
-        res.status(200).json({success : true , token : token , userId:userId , hasedpassword :hasedpassword ,userName :req.body.userName ,fullName:req.body.fullName , })
+        const user = {
+                userName : req.body.userName ,
+                fullName :req.body.fullName ,
+                password : hasedpassword ,
+                avatar : req.body.avatar,
+                phoneNumber : req.body.phoneNumber ,
+                id:userId ,
+                token : token 
+            
+        }
+        const user1 = await client.connectUser(user,token)
+        res.status(200).json({success : true , user})
     }
-   
     }
     catch(err) {
-        res.status(400).json({success :false  , message : err })
+        res.status(400).json({error : err.message })
     }
 
 }
@@ -40,23 +54,24 @@ module.exports.signup = async (req,res)=>{
 module.exports.login = async (req,res)=>{
 
     try{
-            const serverClient = connect(process.API_KEY,process.API_SECRET,process.GET_STREAM_APP_ID)
-            const client = StreamChat.getInstance(process.API_KEY , process.API_SECRET)
-            const users = await client.queryUsers({userName:req.body.userName})
+            const serverClient = connect(process.env.API_KEY,process.env.API_SECRET,process.env.GET_STREAM_APP_ID)
+            const client = StreamChat.getInstance(process.env.API_KEY , process.env.API_SECRET)
+            const users = await (await client.queryUsers({userName:req.body.userName})).users
             if(users.length===0)
             {
-                res.status(400).json({success :false  , message : "This user Name dosn't exist please select a valid user Name " })
+                res.status(200).json({success :false  , message : "This user Name dosn't exist please select a valid user Name " })
     
             }
             else{
-                const confirm = bcrypt.compare(req.body.password , users[0].hasedpassword)
+                const confirm = await bcrypt.compare(req.body.password , users[0].password)
+                console.log(confirm);
                 if (!confirm)
                 {
-                    res.status(400).json({success :false  , message : "Error in the password  " })
+                    res.status(200).json({success :false  , message : "Error in the password  " })
                 }
                 else{
-                    const token = serverClient.createUserToken(users[0].userId)
-                    res.status(200).json({success :true , token : token , user :users[0] })
+                    const token = serverClient.createUserToken(users[0].id)
+                    res.status(200).json({success :true , token : token , user:users[0] })
                 }
             }
     }
@@ -64,3 +79,6 @@ module.exports.login = async (req,res)=>{
         res.status(400).json({success :false ,message :err })
     }
  }
+
+
+ 

@@ -2,9 +2,14 @@
 import { useState } from 'react';
 import '../App.css'
 import { AiFillEye , AiFillEyeInvisible } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie'
+import { StreamChat } from 'stream-chat';
 
 //we must change the <a> </a> in the line 41  by link
 const SignUp = () => {
+    const cookies = new Cookies()
+
 
     const [fullName,setFullName]=useState('')
     const [userName ,setUserName]=useState('')
@@ -41,8 +46,43 @@ const SignUp = () => {
         setMessage('the password is not confirmed ')
         setErr(true)
     } else {
-        // we do the fetch 
+        fetch('http://localhost:8000/signup' , 
+        { method : 'POST' , 
+        headers : {"Content-Type" : "application/json" },  //type of data
+        body : JSON.stringify({
+            fullName :fullName ,
+            userName :userName ,
+            phoneNumber :phoneNumber ,
+            avatar :avatar ,
+            password :password 
+        }) 
+        } )
+        .then((res)=> {
+                return res.json()
+            } )
+    
+        .then((data)=>{
+            if(data.success)
+            {
+                cookies.set('token',data.user.token)
+                cookies.set('userID',data.user.id)
+                cookies.set('hasedpassword',data.user.password)
+                cookies.set('userName',data.user.userName)
+                cookies.set('fullName',data.user.fullName)
+                            //navigate to chat page 
 
+            }
+            else{
+                setMessage(data.message)
+                setErr(true)
+            }
+ 
+
+        })
+        .catch(err=> {
+            setErr(true)
+            setMessage("error in signup")
+        } )
 
     }
     
@@ -79,7 +119,7 @@ const SignUp = () => {
                 <div className='w-[80%] flex justify-end'>
                  <button onClick={submit} className='bg-white shadow-lg rounded-lg p-2 text-[#005FFF] hover:bg-[#0088ff] hover:text-white font-semibold md:text-[16px] sm:text-[14px] text-[11px]'>Sign Up</button>
                 </div>
-                <p className='md:text-[16px] sm:text-[14px] text-[11px]'>Already have an account? <a href='sign in ' className='font-medium hover:text-white'>Sign in</a></p> 
+                <p className='md:text-[16px] sm:text-[14px] text-[11px]'>Already have an account? <Link to='/login' className='font-medium hover:text-white'>Sign in</Link></p> 
             </div>
         </div>
     </div> );

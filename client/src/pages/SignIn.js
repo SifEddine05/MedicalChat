@@ -2,9 +2,14 @@
 import { useState } from 'react';
 import '../App.css'
 import { AiFillEye , AiFillEyeInvisible } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie'
+import { StreamChat } from 'stream-chat';
+
 
 //we must change the <a> </a> in the line 41  by link
 const SignIn = () => {
+    const client = StreamChat.getInstance("9m7fqeq4sq8h")
 
     const [userName ,setUserName]=useState('')
     const [password ,setPassword]=useState('')
@@ -16,6 +21,9 @@ const SignIn = () => {
 
 
     const showpass = ()=>{
+
+        
+
         setShowPassword(!showPassword)
 
         if(showPassword) {
@@ -26,6 +34,7 @@ const SignIn = () => {
         }
     }
     const submit =()=>{
+    const cookies = new Cookies()
     setErr(false)
     if( userName==='' ||  password===''  )
     {
@@ -33,8 +42,42 @@ const SignIn = () => {
         setErr(true)
     }
      else {
-        // we do the fetch 
 
+        fetch('http://localhost:8000/login' , 
+        { method : 'POST' , 
+        headers : {"Content-Type" : "application/json" },  //type of data
+        body : JSON.stringify({
+            userName :userName ,
+            password :password 
+        }) 
+        } )
+        .then((res)=> {
+           
+                return res.json()
+         })
+    
+        .then((data)=>{
+            if(data.success)
+            {
+                console.log(data);
+                cookies.set('token',data.token)
+                cookies.set('userID',data.user.id)
+                cookies.set('hasedpassword',data.user.password)
+                cookies.set('userName',data.user.userName)
+                cookies.set('fullName',data.user.fullName)
+
+                // navigate to home 
+            }
+            else{
+                setErr(true)
+                setMessage(data.message)
+            }
+            
+        })
+        .catch(err=> {
+            setErr(true)
+            setMessage("error in loged in")
+        } )
 
     }
     
@@ -63,7 +106,7 @@ const SignIn = () => {
                 <div className='w-[80%] flex justify-end'>
                  <button onClick={submit} className='bg-white shadow-lg rounded-lg p-2 text-[#005FFF] hover:bg-[#0088ff] hover:text-white font-semibold md:text-[16px] sm:text-[14px] text-[11px]'>Login</button>
                 </div>
-                <p className='md:text-[16px] sm:text-[14px] text-[11px] lg:mb-8 md:mb-6 sm:mb-4 mb-2 '>Don't have an account? <a href='sign in ' className='font-medium hover:text-white'>Sign up</a></p> 
+                <p className='md:text-[16px] sm:text-[14px] text-[11px] lg:mb-8 md:mb-6 sm:mb-4 mb-2 '>Don't have an account? <Link to='/signup ' className='font-medium hover:text-white'>Sign up</Link></p> 
             </div>
         </div>
     </div> );

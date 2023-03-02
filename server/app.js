@@ -17,10 +17,8 @@ app.use(express.urlencoded({extended:true}))
 dotenv.config()
 
 
-app.post('/signup',)
+
+app.use(AuthRouters)
 
 
-app.get("/login" , )
-
-
-app.listen( process.PORT,()=> console.log("Connected") )
+app.listen( 8000,()=> console.log("Connected") )
