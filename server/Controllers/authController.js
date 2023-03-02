@@ -18,7 +18,6 @@ module.exports.signup = async (req,res)=>{
 
 
     const exist = users.users.some(obj => obj.userName === req.body.userName );
-    console.log(exist);
 
   if(exist)
     {
@@ -64,13 +63,13 @@ module.exports.login = async (req,res)=>{
             }
             else{
                 const confirm = await bcrypt.compare(req.body.password , users[0].password)
-                console.log(confirm);
                 if (!confirm)
                 {
                     res.status(200).json({success :false  , message : "Error in the password  " })
                 }
                 else{
                     const token = serverClient.createUserToken(users[0].id)
+                    const user1 = await client.connectUser({userName : users[0].userName  , id:users[0].id },token)
                     res.status(200).json({success :true , token : token , user:users[0] })
                 }
             }
@@ -78,6 +77,23 @@ module.exports.login = async (req,res)=>{
     catch(err){
         res.status(400).json({success :false ,message :err })
     }
+ }
+
+
+
+ module.exports.logout =async (req,res)=>{
+    try{
+        const client = StreamChat.getInstance(process.env.API_KEY , process.env.API_SECRET)
+        const user1 = await client.disconnectUser()
+        res.status(200).json({success :true })
+    }
+    catch(err)
+    {
+        res.status(400).json({success :false ,error : err })
+    }
+   
+
+
  }
 
 

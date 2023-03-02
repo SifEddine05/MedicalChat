@@ -25,6 +25,7 @@ const SignUp = () => {
 
 
     const showpass = ()=>{
+        
         setShowPassword(!showPassword)
 
         if(showPassword) {
@@ -36,7 +37,6 @@ const SignUp = () => {
     }
     const submit =()=>{
     setErr(false)
-    console.log(fullName,userName,avatar,phoneNumber,password,confirmpassword);
     if(fullName==='' || userName==='' || avatar==='' || phoneNumber==='' || password==='' || confirmpassword===''  )
     {
         setMessage('Please fill all the fields')

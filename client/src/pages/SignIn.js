@@ -5,11 +5,12 @@ import { AiFillEye , AiFillEyeInvisible } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import Cookies from 'universal-cookie'
 import { StreamChat } from 'stream-chat';
+import { ChannelList, useChatContext } from 'stream-chat-react';
+
 
 
 //we must change the <a> </a> in the line 41  by link
 const SignIn = () => {
-    const client = StreamChat.getInstance("9m7fqeq4sq8h")
 
     const [userName ,setUserName]=useState('')
     const [password ,setPassword]=useState('')
@@ -20,9 +21,15 @@ const SignIn = () => {
     const [typePwd,setTypePwd]=useState('password')
 
 
-    const showpass = ()=>{
 
-        
+
+    /* fetch('http://localhost:8000/logout')
+        .then(res=>{
+            console.log("OK"); // ineed here to delete cookies 
+        })*/
+
+    const showpass = async()=>{
+       
 
         setShowPassword(!showPassword)
 
@@ -59,7 +66,6 @@ const SignIn = () => {
         .then((data)=>{
             if(data.success)
             {
-                console.log(data);
                 cookies.set('token',data.token)
                 cookies.set('userID',data.user.id)
                 cookies.set('hasedpassword',data.user.password)
