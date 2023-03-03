@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import '../App.css'
 import { AiFillEye , AiFillEyeInvisible } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie'
 import { StreamChat } from 'stream-chat';
 import { ChannelList, useChatContext } from 'stream-chat-react';
@@ -11,7 +11,7 @@ import { ChannelList, useChatContext } from 'stream-chat-react';
 
 //we must change the <a> </a> in the line 41  by link
 const SignIn = () => {
-
+    const navigate = useNavigate()
     const [userName ,setUserName]=useState('')
     const [password ,setPassword]=useState('')
 
@@ -71,8 +71,7 @@ const SignIn = () => {
                 cookies.set('hasedpassword',data.user.password)
                 cookies.set('userName',data.user.userName)
                 cookies.set('fullName',data.user.fullName)
-
-                // navigate to home 
+                navigate('/')
             }
             else{
                 setErr(true)

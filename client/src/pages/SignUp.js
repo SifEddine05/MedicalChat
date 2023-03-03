@@ -2,14 +2,14 @@
 import { useState } from 'react';
 import '../App.css'
 import { AiFillEye , AiFillEyeInvisible } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie'
 import { StreamChat } from 'stream-chat';
 
 //we must change the <a> </a> in the line 41  by link
 const SignUp = () => {
     const cookies = new Cookies()
-
+    const navigate = useNavigate()
 
     const [fullName,setFullName]=useState('')
     const [userName ,setUserName]=useState('')
@@ -69,8 +69,7 @@ const SignUp = () => {
                 cookies.set('hasedpassword',data.user.password)
                 cookies.set('userName',data.user.userName)
                 cookies.set('fullName',data.user.fullName)
-                            //navigate to chat page 
-
+                navigate('/')
             }
             else{
                 setMessage(data.message)
