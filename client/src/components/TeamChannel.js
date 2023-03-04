@@ -11,7 +11,6 @@ const TeamChannel = ({children}) => {
         setCreating(true)
         setErr(false)
         const members = await client.queryUsers( { id: { $ne: client.userID } })
-        console.log(members.users.length !== 0);
         if(members.users.length !== 0)
         {
             setUsers(members.users.filter(e=>e.role!=="admin"))
@@ -21,15 +20,13 @@ const TeamChannel = ({children}) => {
             setErr(true)
             setMSg('No users')
         }
-        console.log(users);
     }
     const [checkedValues, setCheckedValues] = useState([]);
     const [ChannelName ,setChannelName]=useState('')
     const [Err , setErr] =useState(false)
     const [Msg ,setMSg]=useState('')
     const [Creating ,setCreating]=useState(false)
-    const submit =()=>{
-        console.log(checkedValues);
+    const submit =async ()=>{
         setErr(false)
         if(checkedValues.length===0 ||ChannelName==='' )
         {
@@ -37,10 +34,13 @@ const TeamChannel = ({children}) => {
             setErr(true)
         }
         else {
-            //create the channel 
+            const newChannel = await client.channel('team',ChannelName ,{
+                name:ChannelName , members : checkedValues
+            })
+            await  newChannel.watch
+            setActiveChannel(newChannel)
         }
     }
-
     const Cancel =()=>{
         setCreating(false)
     }
