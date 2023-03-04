@@ -12,13 +12,19 @@
     display: none;
   }
 
+.channel-list__list__wrapper2{
+    display: none;
+  }
   @media screen and (max-width: 960px) {
     .container-lists
     {
         display: none ;
     }
     .channel-list__list__wrapper1 {
-        display: inline;
+        display: block;
+    }
+    .channel-list__list__wrapper2{
+        display: block;
     }
     .logout {
         width: 100% ;

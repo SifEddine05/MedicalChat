@@ -3,6 +3,9 @@ import logout1 from '../assets/logout.png'
 import { ChannelList, useChatContext } from 'stream-chat-react';
 import { StreamChat } from 'stream-chat';
 import TeamChannel from './TeamChannel';
+import MessagingChannel from './MessagingChannel';
+import AllMessages from './AllMessages';
+
 import TeamChannelPreview from './TeamChannelPreview';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
@@ -20,6 +23,9 @@ const SideBar = () => {
     const filters = { members: { $in: [client.userID] } };
     const teamChannel=(channels) => {
         return channels.filter((channel) => channel.type === 'team');
+    }
+    const messageChannel =(channels) => {
+        return channels.filter((channel) => channel.type === 'messaging');
     }
 
     const logout =()=>{
@@ -47,16 +53,14 @@ const SideBar = () => {
     
     return ( 
     <div className="w-[25%]  flex justify-start ">
-         <div className='channel-list__list__wrapper1'>
+          <div className='channel-list__list__wrapper2'>
             <ChannelList 
                     breakpoint={100}
                     filters={filters}
-                    channelRenderFilterFn={teamChannel}
-                    List={(listProps)=>( <TeamChannel {...listProps} type="team" /> )}
-                    Preview={(previewProps) => (<TeamChannelPreview {...previewProps} type="team" /> )}
-                />  
-                 
+                    List={(listProps)=>( <AllMessages {...listProps} type="messaging" /> )}
+                />   
             </div>
+          
         <div className=" bg-[#0022ff] w-[20%] logout pt-2  pl-1 mx-auto">
             <div className='md:w-full w-[50%]'>
                 <img src={hospital} alt="" className='mx-auto w-[30px] mt-3 rounded-xl bg-white p-1' />
@@ -78,6 +82,15 @@ const SideBar = () => {
                     channelRenderFilterFn={teamChannel}
                     List={(listProps)=>( <TeamChannel {...listProps} type="team" /> )}
                     Preview={(previewProps) => (<TeamChannelPreview {...previewProps} type="team" /> )}
+                />   
+            </div>
+            <div className='channel-list__list__wrapper'>
+            <ChannelList 
+                    breakpoint={100}
+                    filters={filters}
+                    style={{ height: '500px' }}
+                    channelRenderFilterFn={messageChannel}
+                    List={(listProps)=>( <MessagingChannel {...listProps} type="messaging" /> )}
                 />   
             </div>
             {Err && <h3 className=' text-center md:text-[16px] sm:text-[14px] text-[11px] font-bold text-red-600'>{Msg}</h3>}

@@ -4,7 +4,7 @@ import {AddChannel} from '../assets/AddChannel'
 import { CloseCreateChannel } from '../assets';
 import Cookies from 'universal-cookie';
 
-const TeamChannel = ({children}) => {
+const AllMessages = ({children}) => {
 
     const { client, setActiveChannel } = useChatContext();
     const [users , setUsers]=useState([{}])
@@ -52,7 +52,7 @@ const TeamChannel = ({children}) => {
     return ( 
     <div className='w-full flex flex-col justify-center items-center bg-[#005FFF]'>
         <div className="w-full flex justify-between p-2 px-6  items-center mt-4">
-            <h3 className="text-[16px] text-white opacity-75">Channels</h3>
+            <h3 className="text-[16px] text-white opacity-75">All Messages</h3>
             <button onClick={addChannel}><AddChannel   /></button>
         </div> 
        {Creating &&  <div className='flex flex-col justify-center items-start w-full pl-6 border-t border-b pb-2'>
@@ -99,4 +99,4 @@ const TeamChannel = ({children}) => {
    );
 }
  
-export default TeamChannel;
+export default AllMessages;
