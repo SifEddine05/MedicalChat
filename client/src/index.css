@@ -6,4 +6,27 @@
     display: flex;
     flex-direction: column;
     background: var(--primary-color);
+    
+  }
+  .channel-list__list__wrapper1{
+    display: none;
+  }
+
+  @media screen and (max-width: 960px) {
+    .container-lists
+    {
+        display: none ;
+    }
+    .channel-list__list__wrapper1 {
+        display: inline;
+    }
+    .logout {
+        width: 100% ;
+        display: flex;
+        justify-content: center;
+        justify-items: center;   
+        background-image: url("./assets//signup.jpg");
+        background-position: center; /* Center the image */
+        background-size: cover; /* Resize the background image to cover the entire container */     
+    }
   }

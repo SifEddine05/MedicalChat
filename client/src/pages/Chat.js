@@ -1,4 +1,4 @@
-import { Chat, MessageInput, MessageList, Thread, useChannelActionContext, Window } from 'stream-chat-react';
+import { ChannelHeader, Chat, MessageInput, MessageList, Thread, useChannelActionContext, Window } from 'stream-chat-react';
 import SideBar from '../components/SideBar';
 import { StreamChat } from 'stream-chat';
 import { Channel } from 'stream-chat-react';
@@ -30,14 +30,20 @@ const ChatAPP = () => {
     return ( 
     <div>
         <Chat client={client} theme="team light">
-            <div className='flex'>
+            <div className='flex '>
                 <SideBar />
                 <div className='w-[75%]  '>
                     <Channel 
                     EmptyStateIndicator={EmptyState}
                     >
                      <Window>
-                        <HeadChannel />
+                        {/* <HeadChannel /> */}
+                    <ChannelHeader>
+                        <ChannelHeader.Right>
+                            <button className="menu-button" onClick={() => client.channelList.toggleMobile()}>
+                            </button>
+                        </ChannelHeader.Right>
+                    </ChannelHeader>
                         <MessageList  />
                         <MessageInput onSendMessage={submitt} />
                     </Window>

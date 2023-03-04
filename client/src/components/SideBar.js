@@ -7,7 +7,7 @@ import TeamChannelPreview from './TeamChannelPreview';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { useState } from 'react';
-
+import bg from '../assets/chat.jpg'
 
 const SideBar = () => {
     const client = StreamChat.getInstance("9m7fqeq4sq8h");
@@ -46,20 +46,33 @@ const SideBar = () => {
     }
     
     return ( 
-    <div className="w-[25%]  flex justify-start bg-">
-        <div className=" bg-[#0022ff] w-[20%] pt-2 h-screen ">
-            <img src={hospital} alt="" className='mx-auto w-[30px] rounded-xl bg-white p-1' />
+    <div className="w-[25%]  flex justify-start ">
+         <div className='channel-list__list__wrapper1'>
+            <ChannelList 
+                    breakpoint={100}
+                    filters={filters}
+                    channelRenderFilterFn={teamChannel}
+                    List={(listProps)=>( <TeamChannel {...listProps} type="team" /> )}
+                    Preview={(previewProps) => (<TeamChannelPreview {...previewProps} type="team" /> )}
+                />  
+                 
+            </div>
+        <div className=" bg-[#0022ff] w-[20%] logout pt-2  pl-1 mx-auto">
+            <div className='md:w-full w-[50%]'>
+                <img src={hospital} alt="" className='mx-auto w-[30px] mt-3 rounded-xl bg-white p-1' />
+            </div>
             
-            <div className='mx-auto w-full flex justify-center'>
+            <div className='md:w-full w-[50%] flex justify-center items-start'>
                 <button onClick={logout} ><img src={logout1} alt="" className='  w-[30px] rounded-xl bg-white p-1 mt-3 hover:bg-red-500' /></button>
             </div>
         </div>
        
-        <div className='w-[80%] bg-[#005FFF] shadow-lg '>
+        <div className='w-[80%] bg-[#005FFF] shadow-lg  container-lists '>
             
             <h2 className='lg:text-[22px] text-[18px] font-bold text-white text-center w-full mt-2 border-b pb-2'>Medical Chat</h2>
             <div className='channel-list__list__wrapper'>
             <ChannelList 
+                    breakpoint={100}
                     filters={filters}
                     style={{ height: '500px' }}
                     channelRenderFilterFn={teamChannel}
@@ -69,6 +82,9 @@ const SideBar = () => {
             </div>
             {Err && <h3 className=' text-center md:text-[16px] sm:text-[14px] text-[11px] font-bold text-red-600'>{Msg}</h3>}
         </div>
+
+       
+
 
     </div> );
 }
