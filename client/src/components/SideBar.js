@@ -46,7 +46,7 @@ const SideBar = () => {
     }
     
     return ( 
-    <div className="w-[25%]  flex justify-start">
+    <div className="w-[25%]  flex justify-start bg-">
         <div className=" bg-[#0022ff] w-[20%] pt-2 h-screen ">
             <img src={hospital} alt="" className='mx-auto w-[30px] rounded-xl bg-white p-1' />
             
@@ -54,18 +54,26 @@ const SideBar = () => {
                 <button onClick={logout} ><img src={logout1} alt="" className='  w-[30px] rounded-xl bg-white p-1 mt-3 hover:bg-red-500' /></button>
             </div>
         </div>
+       
         <div className='w-[80%] bg-[#005FFF] shadow-lg '>
+            
             <h2 className='lg:text-[22px] text-[18px] font-bold text-white text-center w-full mt-2 border-b pb-2'>Medical Chat</h2>
+            <div className='channel-list__list__wrapper'>
             <ChannelList 
-                filters={filters}
-                channelRenderFilterFn={teamChannel}
-                List={(listProps)=>( <TeamChannel {...listProps} type="team" /> )}
-                Preview={(previewProps) => (<TeamChannelPreview {...previewProps} type="team" /> )}
-            />
+                    filters={filters}
+                    style={{ height: '500px' }}
+                    channelRenderFilterFn={teamChannel}
+                    List={(listProps)=>( <TeamChannel {...listProps} type="team" /> )}
+                    Preview={(previewProps) => (<TeamChannelPreview {...previewProps} type="team" /> )}
+                />   
+            </div>
             {Err && <h3 className=' text-center md:text-[16px] sm:text-[14px] text-[11px] font-bold text-red-600'>{Msg}</h3>}
         </div>
 
     </div> );
 }
+
+//                    List={(listProps)=>( <TeamChannel {...listProps} type="team" /> )}
+
  
 export default SideBar;

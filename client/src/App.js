@@ -2,6 +2,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import{BrowserRouter ,Route ,Routes } from 'react-router-dom'
 import ChatAPP from "./pages/Chat";
+
 function App() {
   return (
     <BrowserRouter>

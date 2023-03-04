@@ -2,3 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+.channel-list__list__wrapper {
+    display: flex;
+    flex-direction: column;
+    background: var(--primary-color);
+  }
