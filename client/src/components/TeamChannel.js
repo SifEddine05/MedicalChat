@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Channel, useChatContext } from 'stream-chat-react';
 import {AddChannel} from '../assets/AddChannel'
 import { CloseCreateChannel } from '../assets';
+import Cookies from 'universal-cookie';
 
 const TeamChannel = ({children}) => {
 
@@ -26,6 +27,7 @@ const TeamChannel = ({children}) => {
     const [Err , setErr] =useState(false)
     const [Msg ,setMSg]=useState('')
     const [Creating ,setCreating]=useState(false)
+    const cookies = new Cookies()
     const submit =async ()=>{
         setErr(false)
         if(checkedValues.length===0 ||ChannelName==='' )
@@ -34,11 +36,14 @@ const TeamChannel = ({children}) => {
             setErr(true)
         }
         else {
+            checkedValues.push(cookies.get('userID'))
+            console.log(checkedValues);
             const newChannel = await client.channel('team',ChannelName ,{
                 name:ChannelName , members : checkedValues
             })
             await  newChannel.watch
             setActiveChannel(newChannel)
+            setCreating(false)
         }
     }
     const Cancel =()=>{
