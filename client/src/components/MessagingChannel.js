@@ -22,13 +22,30 @@ const MessagingChannel = ({children}) => {
             setMSg('No users')
         }
     }
-    const [checkedValues, setCheckedValues] = useState([]);
+    const [selectedOption, setSelectedOption] = useState("");
     const [ChannelName ,setChannelName]=useState('')
     const [Err , setErr] =useState(false)
     const [Msg ,setMSg]=useState('')
     const [Creating ,setCreating]=useState(false)
     const cookies = new Cookies()
-    const submit =async ()=>{
+    const submitt = async()=>{
+            setErr(false)
+            if(selectedOption==='' ||ChannelName==='' )
+            {
+                setMSg('Please Fill all the fields')
+                setErr(true)
+            }
+            else {
+                const newChannel = await client.channel('messaging',ChannelName ,{
+                    name:ChannelName , members : [selectedOption ,cookies.get('userID')]
+                })
+                await  newChannel.watch
+                setActiveChannel(newChannel)
+                setCreating(false)
+            }
+
+    }
+    /*const submit =async ()=>{
         setErr(false)
         if(checkedValues.length===0 ||ChannelName==='' )
         {
@@ -38,14 +55,17 @@ const MessagingChannel = ({children}) => {
         else {
             checkedValues.push(cookies.get('userID'))
             console.log(checkedValues);
-            const newChannel = await client.channel('team',ChannelName ,{
+            const newChannel = await client.channel('messaging',ChannelName ,{
                 name:ChannelName , members : checkedValues
             })
             await  newChannel.watch
             setActiveChannel(newChannel)
             setCreating(false)
         }
-    }
+    }*/
+    const handleOptionChange = (event) => {
+        setSelectedOption(event.target.value);
+      };
     const Cancel =()=>{
         setCreating(false)
     }
@@ -73,15 +93,10 @@ const MessagingChannel = ({children}) => {
             {users.map((e)=>{
                    return( 
                    <div className='w-full flex' key={e.id}>
-                        <input  type="checkbox" id="selectMembers"   name="selectMembers" value={e.id}   
-                        onChange={(event) => {
-                            if (event.target.checked) {
-                                setCheckedValues([...checkedValues, e.id]);
-                            } else {
-                                setCheckedValues(checkedValues.filter(id => id !== e.id));
-                            }
-                        }}
-                        checked={checkedValues.includes(e.id)}  className='w-4'/> 
+                        <input  type="radio" id="selectMembers"   name="selectMembers" value={e.id}   
+                        checked={selectedOption === e.id}
+                        onChange={handleOptionChange}
+                        className='w-4'/> 
                         <label Htmlfor='selectMembers' className='text-[14px] ml-2 font-normal'>{e.userName}</label>
                    </div> )
                  
@@ -89,7 +104,7 @@ const MessagingChannel = ({children}) => {
             </div>  
             {Err && <h3 className=' text-center md:text-[16px] sm:text-[14px] text-[11px] font-bold text-red-600'>{Msg}</h3>}
 
-            <button onClick={submit} className='bg-white shadow-lg rounded-lg p-1 self-center text-[#005FFF] hover:bg-[#0088ff] hover:text-white font-semibold md:text-[16px] sm:text-[14px] text-[11px] mt-2'>Create</button>
+            <button onClick={submitt} className='bg-white shadow-lg rounded-lg p-1 self-center text-[#005FFF] hover:bg-[#0088ff] hover:text-white font-semibold md:text-[16px] sm:text-[14px] text-[11px] mt-2'>Create</button>
             
         </div> }
         <div className='text-[10px] text-center w-[90%] flex p-2 px-4 flex-col items-center text-white justify-center '>

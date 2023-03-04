@@ -1,24 +1,28 @@
 import { useState } from "react";
 import { useChannelStateContext, useChatContext } from "stream-chat-react";
 import { ChannelInfo } from "../assets";
-
+import { AiOutlineMenu } from "react-icons/ai";
 
 
 
 const HeadChannel = () => {
     const {channel:activeChannel   } = useChatContext();
     const { watcher_count } = useChannelStateContext();
-   
    // const members = Object.values(channel.state.members)//.filter(({ user }) => user.id !== client.userID)
-
+    const showList =()=>{
+        const channelList = document.getElementsByClassName("str-chat-channel-list" );
+        channelList[0].style.display ="block"
+    
+    }
     return ( 
-    <div className="flex flex-col justify-center">
-        <div className="w-full flex justify-between items-center p-2 pb-[14px] border-b bg-[#e7e1e1]">
+    <div className="flex flex-col justify-center w-full">
+        <div className="w-full flex justify-between items-center p-2 pb-[14px] border-b bg-[#005FFF]">
             <div className="flex justify-start items-center">
-                <h3 className="text-[18px] font-bold text-[#005FFF] mr-2"># {activeChannel.data.name } </h3>
+                <button className="w-[40px]" onClick={showList}><AiOutlineMenu  style={{ fontSize: '20px', color: 'white' }}/></button>
+                <h3 className="text-[18px] font-bold text-white mr-2"># {activeChannel.data.name } </h3>
             <button> <ChannelInfo /> </button>
             </div>
-            <h3 className="text-[16px] opacity-75  text-[#005FFF]"> {watcher_count} users online </h3>
+            <h3 className="text-[16px] opacity-75  text-white"> {watcher_count} users online </h3>
         </div> 
         {/* <div className="w-[50%] bg-[#005FFF] flex flex-col justify-center items-center mx-auto shadow-lg rounded-lg">
             <h3 className="text-center text-[16px] font-bold text-white">Channel Information</h3>

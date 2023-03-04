@@ -3,9 +3,32 @@ import { Channel, useChatContext } from 'stream-chat-react';
 import {AddChannel} from '../assets/AddChannel'
 import { CloseCreateChannel } from '../assets';
 import Cookies from 'universal-cookie';
-
+import hospital from '../assets/hospital.png'
+import logout1 from '../assets/logout.png'
+import { useNavigate } from 'react-router-dom';
 const AllMessages = ({children}) => {
-
+    const navigate =useNavigate()
+    const logout =()=>{
+        setErr(false)
+        fetch('http://localhost:8000/logout')
+        .then((res)=>{
+            return res.json()
+        })
+        .then((data)=>{
+            if(data.success===true)
+            {
+                cookies.remove('token')
+                cookies.remove('userID')
+                cookies.remove('hasedpassword')
+                cookies.remove('userName')
+                cookies.remove('fullName')
+                navigate('/login')
+            }
+        })
+        .catch(err=>{
+            
+        })
+    }
     const { client, setActiveChannel } = useChatContext();
     const [users , setUsers]=useState([{}])
     const addChannel =async ()=>{
@@ -24,13 +47,15 @@ const AllMessages = ({children}) => {
     }
     const [checkedValues, setCheckedValues] = useState([]);
     const [ChannelName ,setChannelName]=useState('')
+    const [ChannelType ,setChannelType] =useState('')
     const [Err , setErr] =useState(false)
     const [Msg ,setMSg]=useState('')
     const [Creating ,setCreating]=useState(false)
     const cookies = new Cookies()
     const submit =async ()=>{
         setErr(false)
-        if(checkedValues.length===0 ||ChannelName==='' )
+        console.log(ChannelType);
+        if(checkedValues.length===0 ||ChannelName==='' || ChannelType==='')
         {
             setMSg('Please Fill all the fields')
             setErr(true)
@@ -38,7 +63,7 @@ const AllMessages = ({children}) => {
         else {
             checkedValues.push(cookies.get('userID'))
             console.log(checkedValues);
-            const newChannel = await client.channel('team',ChannelName ,{
+            const newChannel = await client.channel(ChannelType,ChannelName ,{
                 name:ChannelName , members : checkedValues
             })
             await  newChannel.watch
@@ -49,13 +74,18 @@ const AllMessages = ({children}) => {
     const Cancel =()=>{
         setCreating(false)
     }
+
+    const showList =()=>{
+        const channelList = document.getElementsByClassName("str-chat-channel-list" );
+        channelList[0].style.display ="none"
+    }
     return ( 
-    <div className='w-full flex flex-col justify-center items-center bg-[#005FFF]'>
-        <div className="w-full flex justify-between p-2 px-6  items-center mt-4">
+    <div className='w-full flex flex-col justify-center items-center bg-[#005FFF] bg-opacity-75'>
+        <div className="w-full flex justify-between p-2 px-6  items-center mt-4 max-h-[50px]">
             <h3 className="text-[16px] text-white opacity-75">All Messages</h3>
             <button onClick={addChannel}><AddChannel   /></button>
         </div> 
-       {Creating &&  <div className='flex flex-col justify-center items-start w-full pl-6 border-t border-b pb-2'>
+       {Creating &&  <div className='flex flex-col justify-center items-start w-full pl-6 border-t border-b pb-2 max-h-[250px] overflow-auto'>
             <div className='flex justify-between items-center w-full px-1'>
                 <h3 className='md:text-[16px] sm:text-[14px] text-[11px] font-bold text-left text-white '> Add Channel</h3>
                 <button className='' onClick={Cancel}>
@@ -86,14 +116,30 @@ const AllMessages = ({children}) => {
                    </div> )
                  
             })}
+            <label htmlFor='Type'  className='md:text-[14px] sm:text-[14px] text-[11px] font-semibold sm:mt-3 mt-2 '>Channel Type</label>
+            <select name='Type' id='Type' className='rounded-lg w-[90%] p-2' value={ChannelType} onChange={(e)=>{setChannelType(e.target.value)}}>
+                <option value="team">Channel</option>
+                <option value="messaging">Direct Message</option>
+            </select>
             </div>  
             {Err && <h3 className=' text-center md:text-[16px] sm:text-[14px] text-[11px] font-bold text-red-600'>{Msg}</h3>}
 
             <button onClick={submit} className='bg-white shadow-lg rounded-lg p-1 self-center text-[#005FFF] hover:bg-[#0088ff] hover:text-white font-semibold md:text-[16px] sm:text-[14px] text-[11px] mt-2'>Create</button>
             
         </div> }
-        <div className='text-[10px] text-center w-[90%] flex p-2 px-4 flex-col items-center text-white justify-center '>
+        <div className='text-[10px] text-center w-[90%] flex p-2 px-4 flex-col items-center text-white justify-center max-h-[50%] pt-[80px] overflow-auto'>
             {children}
+        </div>
+        <div className="  bg-opacity-75 w-[100%]  pt-2  pl-1 mx-auto flex flex-justify-center items-center flex-col mb-4"> 
+            <button  onClick ={showList} className='flex justify-center items-center mb-10'>
+                <CloseCreateChannel />
+                <h3 className='text-white font-bold ml-2'>Cancel</h3>
+            </button>
+            <div className='w-full  flex justify-center items-center  '>
+                <button onClick={logout} ><img src={logout1} alt="" className='  w-[30px] rounded-xl bg-white p-1 hover:bg-red-500' /></button>
+                <h3 className='text-white font-bold ml-2'>Logout</h3>
+            </div>
+           
         </div>
     </div>
    );

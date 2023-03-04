@@ -19,7 +19,6 @@ const ChatAPP = () => {
     /***To connect the user  */
     const client = StreamChat.getInstance("9m7fqeq4sq8h");
     client.connectUser({id:cookies.get('userID') } ,cookies.get('token'))        
-        
     
     const { sendMessage } = useChannelActionContext();
 
@@ -32,18 +31,16 @@ const ChatAPP = () => {
         <Chat client={client} theme="team light">
             <div className='flex '>
                 <SideBar />
-                <div className='w-[75%]  '>
+                <div className='w-[75%]  ch'>
                     <Channel 
                     EmptyStateIndicator={EmptyState}
                     >
                      <Window>
-                        {/* <HeadChannel /> */}
-                    <ChannelHeader>
-                        <ChannelHeader.Right>
-                            <button className="menu-button" onClick={() => client.channelList.toggleMobile()}>
-                            </button>
-                        </ChannelHeader.Right>
-                    </ChannelHeader>
+                        <HeadChannel />
+                    {/* <ChannelHeader>
+                    <button onClick={handleOpenSettings}>Custom Button</button>
+
+                    </ChannelHeader> */}
                         <MessageList  />
                         <MessageInput onSendMessage={submitt} />
                     </Window>

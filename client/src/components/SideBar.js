@@ -1,6 +1,6 @@
 import hospital from '../assets/hospital.png'
 import logout1 from '../assets/logout.png'
-import { ChannelList, useChatContext } from 'stream-chat-react';
+import { ChannelList } from 'stream-chat-react';
 import { StreamChat } from 'stream-chat';
 import TeamChannel from './TeamChannel';
 import MessagingChannel from './MessagingChannel';
@@ -10,13 +10,11 @@ import TeamChannelPreview from './TeamChannelPreview';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { useState } from 'react';
-import bg from '../assets/chat.jpg'
 
 const SideBar = () => {
     const client = StreamChat.getInstance("9m7fqeq4sq8h");
     const navigate = useNavigate()
     const cookies = new Cookies()
-
     const [Err , setErr] = useState(true)
     const [Msg ,setMsg]=useState('')
 
@@ -52,10 +50,9 @@ const SideBar = () => {
     }
     
     return ( 
-    <div className="w-[25%]  flex justify-start ">
+    <div className="w-[25%]  channel flex justify-start max-h-screen overflow-auto">
           <div className='channel-list__list__wrapper2'>
             <ChannelList 
-                    breakpoint={100}
                     filters={filters}
                     List={(listProps)=>( <AllMessages {...listProps} type="messaging" /> )}
                 />   
@@ -76,9 +73,8 @@ const SideBar = () => {
             <h2 className='lg:text-[22px] text-[18px] font-bold text-white text-center w-full mt-2 border-b pb-2'>Medical Chat</h2>
             <div className='channel-list__list__wrapper'>
             <ChannelList 
-                    breakpoint={100}
+                    
                     filters={filters}
-                    style={{ height: '500px' }}
                     channelRenderFilterFn={teamChannel}
                     List={(listProps)=>( <TeamChannel {...listProps} type="team" /> )}
                     Preview={(previewProps) => (<TeamChannelPreview {...previewProps} type="team" /> )}
@@ -86,9 +82,8 @@ const SideBar = () => {
             </div>
             <div className='channel-list__list__wrapper'>
             <ChannelList 
-                    breakpoint={100}
+                
                     filters={filters}
-                    style={{ height: '500px' }}
                     channelRenderFilterFn={messageChannel}
                     List={(listProps)=>( <MessagingChannel {...listProps} type="messaging" /> )}
                 />   

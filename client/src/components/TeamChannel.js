@@ -50,7 +50,7 @@ const TeamChannel = ({children}) => {
         setCreating(false)
     }
     return ( 
-    <div className='w-full flex flex-col justify-center items-center bg-[#005FFF]'>
+    <div className='w-full flex flex-col justify-center items-center bg-[#005FFF] '>
         <div className="w-full flex justify-between p-2 px-6  items-center mt-4">
             <h3 className="text-[16px] text-white opacity-75">Channels</h3>
             <button onClick={addChannel}><AddChannel   /></button>
