@@ -8,17 +8,16 @@ import { AiOutlineMenu } from "react-icons/ai";
 const HeadChannel = () => {
     const {channel:activeChannel   } = useChatContext();
     const { watcher_count } = useChannelStateContext();
-   // const members = Object.values(channel.state.members)//.filter(({ user }) => user.id !== client.userID)
     const showList =()=>{
         const channelList = document.getElementsByClassName("str-chat-channel-list" );
         channelList[0].style.display ="block"
     
     }
     return ( 
-    <div className="flex flex-col justify-center w-full">
+    <div className="flex flex-col justify-center w-full border-l">
         <div className="w-full flex justify-between items-center p-2 pb-[14px] border-b bg-[#005FFF]">
             <div className="flex justify-start items-center">
-                <button className="w-[40px]" onClick={showList}><AiOutlineMenu  style={{ fontSize: '20px', color: 'white' }}/></button>
+                <button className="w-[40px] menu" onClick={showList}><AiOutlineMenu  style={{ fontSize: '20px', color: 'white' }}/></button>
                 <h3 className="text-[18px] font-bold text-white mr-2"># {activeChannel.data.name } </h3>
             <button> <ChannelInfo /> </button>
             </div>

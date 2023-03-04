@@ -14,7 +14,9 @@
   .channel-list__list__wrapper2{
     display: none;
   }
-
+.menu{
+    display: none;
+}
 
   @media screen and (max-width: 960px) {
     .container-lists
@@ -42,6 +44,9 @@
    }
    .ch {
     width: 100%;
+   }
+   .menu{
+    display: block;
    }
   }
 

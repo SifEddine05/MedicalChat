@@ -77,8 +77,12 @@ const TeamChannel = ({children}) => {
                         onChange={(event) => {
                             if (event.target.checked) {
                                 setCheckedValues([...checkedValues, e.id]);
+                                console.log("checked ",e.id);
                             } else {
                                 setCheckedValues(checkedValues.filter(id => id !== e.id));
+                                console.log("dischecked ",e.id);
+                                console.log(checkedValues);
+
                             }
                         }}
                         checked={checkedValues.includes(e.id)}  className='w-4'/> 

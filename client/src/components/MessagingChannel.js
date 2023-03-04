@@ -45,24 +45,7 @@ const MessagingChannel = ({children}) => {
             }
 
     }
-    /*const submit =async ()=>{
-        setErr(false)
-        if(checkedValues.length===0 ||ChannelName==='' )
-        {
-            setMSg('Please Fill all the fields')
-            setErr(true)
-        }
-        else {
-            checkedValues.push(cookies.get('userID'))
-            console.log(checkedValues);
-            const newChannel = await client.channel('messaging',ChannelName ,{
-                name:ChannelName , members : checkedValues
-            })
-            await  newChannel.watch
-            setActiveChannel(newChannel)
-            setCreating(false)
-        }
-    }*/
+   
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
       };

@@ -53,14 +53,17 @@ const AllMessages = ({children}) => {
     const [Creating ,setCreating]=useState(false)
     const cookies = new Cookies()
     const submit =async ()=>{
+
+        console.log(checkedValues,ChannelName,ChannelType,type);
         setErr(false)
-        console.log(ChannelType);
-        if(checkedValues.length===0 ||ChannelName==='' || ChannelType==='')
+        if(checkedValues.length===0 & selectedOption==='' ||ChannelName==='' || ChannelType==='')
         {
             setMSg('Please Fill all the fields')
             setErr(true)
         }
         else {
+            if(type)
+            {   
             checkedValues.push(cookies.get('userID'))
             console.log(checkedValues);
             const newChannel = await client.channel(ChannelType,ChannelName ,{
@@ -69,16 +72,34 @@ const AllMessages = ({children}) => {
             await  newChannel.watch
             setActiveChannel(newChannel)
             setCreating(false)
+
+            }
+            else{
+                const newChannel = await client.channel('messaging',ChannelName ,{
+                    name:ChannelName , members : [selectedOption ,cookies.get('userID')]
+                })
+                await  newChannel.watch
+                setActiveChannel(newChannel)
+                setCreating(false)
+            }
+            
         }
     }
     const Cancel =()=>{
         setCreating(false)
     }
+    const [type,setType] =useState(true)
 
     const showList =()=>{
         const channelList = document.getElementsByClassName("str-chat-channel-list" );
         channelList[0].style.display ="none"
     }
+
+    const [selectedOption, setSelectedOption] = useState("");
+
+    const handleOptionChange = (event) => {
+        setSelectedOption(event.target.value);
+      };
     return ( 
     <div className='w-full flex flex-col justify-center items-center bg-[#005FFF] bg-opacity-75'>
         <div className="w-full flex justify-between p-2 px-6  items-center mt-4 max-h-[50px]">
@@ -101,9 +122,10 @@ const AllMessages = ({children}) => {
             <div className='flex flex-col mt-3 overflow-auto max-h-[250px] w-full'>
                 
             {users.map((e)=>{
-                   return( 
-                   <div className='w-full flex' key={e.id}>
-                        <input  type="checkbox" id="selectMembers"   name="selectMembers" value={e.id}   
+                   return(
+                     
+                  <div className='w-full flex' key={e.id}>
+                       {type && <input  type="checkbox" id="selectMembers"   name="selectMembers" value={e.id}   
                         onChange={(event) => {
                             if (event.target.checked) {
                                 setCheckedValues([...checkedValues, e.id]);
@@ -111,13 +133,23 @@ const AllMessages = ({children}) => {
                                 setCheckedValues(checkedValues.filter(id => id !== e.id));
                             }
                         }}
-                        checked={checkedValues.includes(e.id)}  className='w-4'/> 
-                        <label Htmlfor='selectMembers' className='text-[14px] ml-2 font-normal'>{e.userName}</label>
+                        checked={checkedValues.includes(e.id)}  className='w-4'/> }
+                        {!type &&  <input  type="radio" id="selectMembers"   name="selectMembers" value={e.id}   
+                        checked={selectedOption === e.id}
+                        onChange={handleOptionChange}
+                        className='w-4'/> 
+
+                        }
+                        <label Htmlfor='selectMembers' className='text-[14px] ml-2 font-normal'>{e.userName}</label> 
                    </div> )
                  
             })}
             <label htmlFor='Type'  className='md:text-[14px] sm:text-[14px] text-[11px] font-semibold sm:mt-3 mt-2 '>Channel Type</label>
-            <select name='Type' id='Type' className='rounded-lg w-[90%] p-2' value={ChannelType} onChange={(e)=>{setChannelType(e.target.value)}}>
+            <select name='Type' id='Type' className='rounded-lg w-[90%] p-2' value={ChannelType} onChange={(e)=>{setChannelType(e.target.value) ; 
+                if(e.target.value==="team")setType(true)
+                else setType(false)
+
+                }}>
                 <option value="team">Channel</option>
                 <option value="messaging">Direct Message</option>
             </select>
@@ -127,7 +159,7 @@ const AllMessages = ({children}) => {
             <button onClick={submit} className='bg-white shadow-lg rounded-lg p-1 self-center text-[#005FFF] hover:bg-[#0088ff] hover:text-white font-semibold md:text-[16px] sm:text-[14px] text-[11px] mt-2'>Create</button>
             
         </div> }
-        <div className='text-[10px] text-center w-[90%] flex p-2 px-4 flex-col items-center text-white justify-center max-h-[50%] pt-[80px] overflow-auto'>
+        <div className='text-[10px] text-center w-[90%] flex p-2 px-4 flex-col items-center text-white justify-center max-h-[300px]  overflow-auto'>
             {children}
         </div>
         <div className="  bg-opacity-75 w-[100%]  pt-2  pl-1 mx-auto flex flex-justify-center items-center flex-col mb-4"> 
