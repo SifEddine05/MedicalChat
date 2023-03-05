@@ -11,6 +11,8 @@ import { ChannelList, useChatContext } from 'stream-chat-react';
 
 //we must change the <a> </a> in the line 41  by link
 const SignIn = () => {
+
+
     const navigate = useNavigate()
     const [userName ,setUserName]=useState('')
     const [password ,setPassword]=useState('')
@@ -72,7 +74,6 @@ const SignIn = () => {
                 cookies.set('userName',data.user.userName)
                 cookies.set('fullName',data.user.fullName)
                 navigate('/home')
-                window.location.reload()
             }
             else{
                 setErr(true)

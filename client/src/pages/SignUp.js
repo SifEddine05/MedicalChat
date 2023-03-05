@@ -70,7 +70,6 @@ const SignUp = () => {
                 cookies.set('userName',data.user.userName)
                 cookies.set('fullName',data.user.fullName)
                 navigate('/home')
-                window.location.reload()
 
             }
             else{

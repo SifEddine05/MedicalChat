@@ -5,6 +5,7 @@ import { Channel } from 'stream-chat-react';
 import Cookies from 'universal-cookie'
 import 'stream-chat-react/dist/css/index.css';
 import HeadChannel from '../components/HeadChannel';
+import { useState } from 'react';
 
 const EmptyState = () => (
     <div className="flex-col flex justify-center items-center mt-[300px]">
@@ -15,10 +16,15 @@ const EmptyState = () => (
 
 const ChatAPP = () => {
     const cookies = new Cookies()
-
     /***To connect the user  */
     const client = StreamChat.getInstance("9m7fqeq4sq8h");
-    client.connectUser({id:cookies.get('userID') } ,cookies.get('token'))        
+    if(!cookies.get('userID'))
+    {
+        
+    }else{
+        client.connectUser({id:cookies.get('userID') } ,cookies.get('token')) 
+       
+    }
     
     const { sendMessage } = useChannelActionContext();
 

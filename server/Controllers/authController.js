@@ -56,6 +56,7 @@ module.exports.login = async (req,res)=>{
             const serverClient = connect(process.env.API_KEY,process.env.API_SECRET,process.env.GET_STREAM_APP_ID)
             const client = StreamChat.getInstance(process.env.API_KEY , process.env.API_SECRET)
             const users = await (await client.queryUsers({userName:req.body.userName})).users
+            console.log("ss");
             if(users.length===0)
             {
                 res.status(200).json({success :false  , message : "This user Name dosn't exist please select a valid user Name " })

@@ -7,7 +7,7 @@ import MessagingChannel from './MessagingChannel';
 import AllMessages from './AllMessages';
 
 import TeamChannelPreview from './TeamChannelPreview';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { useState } from 'react';
 
@@ -40,7 +40,7 @@ const SideBar = () => {
                 cookies.remove('hasedpassword')
                 cookies.remove('userName')
                 cookies.remove('fullName')
-                navigate('/login')
+                navigate('/')
             }
         })
         .catch(err=>{
@@ -60,9 +60,8 @@ const SideBar = () => {
           
         <div className=" bg-[#0022ff] w-[20%] logout pt-2  pl-1 mx-auto">
             <div className='md:w-full w-[50%]'>
-                <img src={hospital} alt="" className='mx-auto w-[30px] mt-3 rounded-xl bg-white p-1' />
+                <Link  to='/'><img src={hospital} alt="" className='mx-auto w-[30px] mt-3 rounded-xl bg-white p-1' /></Link>
             </div>
-            
             <div className='md:w-full w-[50%] flex justify-center items-start'>
                 <button onClick={logout} ><img src={logout1} alt="" className='  w-[30px] rounded-xl bg-white p-1 mt-3 hover:bg-red-500' /></button>
             </div>
