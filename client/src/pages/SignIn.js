@@ -71,7 +71,7 @@ const SignIn = () => {
                 cookies.set('hasedpassword',data.user.password)
                 cookies.set('userName',data.user.userName)
                 cookies.set('fullName',data.user.fullName)
-                navigate('/')
+                navigate('/home')
                 window.location.reload()
             }
             else{
