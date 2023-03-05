@@ -56,7 +56,7 @@ const AllMessages = ({children}) => {
 
         console.log(checkedValues,ChannelName,ChannelType,type);
         setErr(false)
-        if(checkedValues.length===0 & selectedOption==='' ||ChannelName==='' || ChannelType==='')
+        if((checkedValues.length===0 && selectedOption.length===0) ||ChannelName==='' || ChannelType==='')
         {
             setMSg('Please Fill all the fields')
             setErr(true)
