@@ -20,7 +20,7 @@ Overall, MedChat is a reliable and secure medical chat application that enables 
 
 ## Demo
 
-link to demo : https://celebrated-puffpuff-f19158.netlify.app/
+link to demo : https://medicalchat.netlify.app/
 
 
 ## Installation
