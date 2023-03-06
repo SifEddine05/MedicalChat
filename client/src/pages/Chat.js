@@ -5,7 +5,8 @@ import { Channel } from 'stream-chat-react';
 import Cookies from 'universal-cookie'
 import 'stream-chat-react/dist/css/index.css';
 import HeadChannel from '../components/HeadChannel';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const EmptyState = () => (
     <div className="flex-col flex justify-center items-center mt-[300px]">
@@ -18,14 +19,50 @@ const ChatAPP = () => {
     const cookies = new Cookies()
     /***To connect the user  */
     const client = StreamChat.getInstance("9m7fqeq4sq8h");
-    if(!cookies.get('userID'))
-    {
-        
-    }else{
-        client.connectUser({id:cookies.get('userID') } ,cookies.get('token')) 
-       
+    const navigate = useNavigate()
+
+    const test =async ()=>{
+
+        if(!cookies.get('userID'))
+        {
+            navigate('/login')
+  
+        }
+        else{
+            try{
+                const ss= await  client.connectUser({id:cookies.get('userID') } ,cookies.get('token')) 
+                console.log(ss);
+                if(!ss)
+                {
+                    navigate('/login')
+                }
+            }
+            catch{
+                navigate('/login')
+            }
+        }
     }
-    
+
+
+test()    
+   /* useEffect( ()=>{
+        if(!cookies.get('userID'))
+        {
+            navigate('/login')
+  
+        }else{
+           test().then( sss=>{
+            console.log(sss);
+
+            if(!sss)
+            {
+                navigate('/login')
+            }
+        })
+           
+        }
+    },[])*/
+   
     const { sendMessage } = useChannelActionContext();
 
     const submitt= async (message)=>{
