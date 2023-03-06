@@ -90,7 +90,7 @@ const MessagingChannel = ({children}) => {
             <button onClick={submitt} className='bg-white shadow-lg rounded-lg p-1 self-center text-[#005FFF] hover:bg-[#0088ff] hover:text-white font-semibold md:text-[16px] sm:text-[14px] text-[11px] mt-2'>Create</button>
             
         </div> }
-        <div className='text-[10px] text-center w-[90%] flex p-2 px-4 flex-col items-center text-white justify-center '>
+        <div className='text-[10px] text-center w-[90%] flex p-2 px-4 flex-col items-center text-white justify-center max-h-[40vh]  overflow-auto'>
             {children}
         </div>
     </div>

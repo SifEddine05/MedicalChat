@@ -50,7 +50,7 @@ const SideBar = () => {
     }
     
     return ( 
-    <div className="w-[25%]  channel flex justify-start ">
+    <div className="w-[25%]  channel flex justify-start  ">
           <div className='channel-list__list__wrapper2'>
             <ChannelList 
                     filters={filters}
